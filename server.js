@@ -50,22 +50,18 @@ function getPlayerInfo(trackID) {
 
             request.get(reqOptions, (error, response, body) => {
                 let track = JSON.parse(body);
-                console.log(track);
                 
-                player.track = track.name;
-                player.url = track.album.images[0].url;
-                player.album = track.album.name;
-                player.artist = [];
+                player.track.title = track.name;
+                player.track.artUrl = track.album.images[0].url;
+                player.track.album = track.album.name;
+                
+                player.track.artist = [];
                 track.artists.forEach((artist) => {
                     player.artist.push(artist.name);
                 })
-                
-                console.log(player);
             });
-
         }
     });
-
 }
 
 var sockets = [];
