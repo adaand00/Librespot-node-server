@@ -1,5 +1,7 @@
 const http = require('http');
+const request = require('request'); // "Request" library
 const websocket = require('ws');
+const keys = require('./API-keys');
 
 var player = {
     status: "stopped",
@@ -12,11 +14,57 @@ var player = {
     }
 }
 
+var token = "";
+
 function getPlayerInfo(trackID) {
+    
+    console.log(trackID)
 
-    //TODO: update player from spotify API
+    // application requests authorization
+    let auth = keys.id + ":" + keys.secret;
+    let authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + (new Buffer.alloc(auth.length, auth).toString('base64'))
+        },
+        form: {
+            grant_type: 'client_credentials'
+        },
+        json: true
+    };
 
-    player.track.title = trackID;
+    request.post(authOptions, function(error, response, body) {
+        console.log(body);
+        if (!error && response.statusCode === 200) {
+
+            // use the access token to access the Spotify Web API
+            token = body.access_token;
+
+            let reqOptions = {
+                url: "https://api.spotify.com/v1/tracks/" + trackID,
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json" 
+                }
+            }
+
+            request.get(reqOptions, (error, response, body) => {
+                let track = JSON.parse(body);
+                console.log(track);
+                
+                player.track = track.name;
+                player.url = track.album.images[0].url;
+                player.album = track.album.name;
+                player.artist = [];
+                track.artists.forEach((artist) => {
+                    player.artist.push(artist.name);
+                })
+                
+                console.log(player);
+            });
+
+        }
+    });
 
 }
 
@@ -53,7 +101,7 @@ const hServer = new http.createServer((req, res) => {
         // save params in Key/value pair
         let paramMap = new Map;
         par.forEach(kvPair => {
-            kvPair.split("=")
+            kvPair = kvPair.split("=")
             paramMap.set(kvPair[0], kvPair[1])
         });
 
@@ -62,9 +110,11 @@ const hServer = new http.createServer((req, res) => {
             res.statusCode = 405;
             res.end();
         }
+        console.log(paramMap)
 
         if(paramMap.has("id")){
             // update player info
+            console.log("id="+ paramMap.get("id"))
             getPlayerInfo(paramMap.get("id"))
         }
 
