@@ -1,3 +1,5 @@
+#!/usr/bin/node
+
 const http = require('http');
 const websocket = require('ws');
 const keys = require('./API-keys');
