@@ -6,16 +6,18 @@ const keys = require('./API-keys');
 const axios = require('axios');
 const static = require('node-static')
 
-var player = {
+const noPlayer = JSON.stringify({
     status: "stopped",
     volume: 0,
     track: {
         artist: [],
         album: "",
         title: "",
-        artUrl: ""
+        artUrl: "case-audio.com/noplayer.png"
     }
-}
+})
+
+var player = JSON.parse(noPlayer);
 
 var token = "";
 
@@ -63,44 +65,66 @@ function getPlayerInfo(trackID){
 
 // Handle updated parameters and send to sockets
 async function handleNewParams(paramMap){
-    const promises = [];
 
-    if(paramMap.has("id")){
+    var updateID = true;
+    if(paramMap.has("status")){
+        // Handle status changes 
+        console.log(paramMap.get("status"));
+        
+        switch (paramMap.get("status")) {
+            case "playing":
+                player.status = "playing";
+
+                break;
+
+            //Set to default, save volume and paused
+            case "paused":
+                // var v = player.volume;
+                // player = JSON.parse(noPlayer);
+                // player.volume = v;
+                player.status = "paused";
+                break;
+
+            //Set to default
+            case "stopped":
+                player = JSON.parse(noPlayer); 
+                updateID = false;
+                break;
+
+            //Ignore these statuses
+            case "preloading":
+                updateID = false;
+            case "volume_set":
+            case "changed":
+            case "started":
+                break;
+
+            //Some other status
+            default:
+                console.log("unknown status: "+paramMap.get("status"))
+                break;
+        }     
+    }
+    
+    if(paramMap.has("id") && updateID){
         // update player info
-        promises.push(getPlayerInfo(paramMap.get("id")));
+        await getPlayerInfo(paramMap.get("id"));
     }
 
     if(paramMap.has("vol")){
         // update volume
+        console.log("new volume");
         player.volume = Math.round(paramMap.get("vol")*100 / 65536);
     }
 
-    if(paramMap.has("status")){
-        // TODO: Handle status changes 
-        // update status
-        // switch (paramMap.get("status")) {
-        //     case playing:
-        //         player.status = "player";
-        //         break;
-        //     default:
-        //         player.status = "unknown";
-        //         break;
-        // }
-        player.status = paramMap.get("status")
-    }
-
-    // Wait for all APIs to return, then notify all subscribers. 
-    Promise.all(promises).then(() => {
-        //console.log(player);
-
-        sockets.forEach((socket) => {
-            socket.send(JSON.stringify(player));
-        })
-    })
+    sockets.forEach((socket) => {
+        socket.send(JSON.stringify(player));
+    });
 }
 
 var sockets = [];
 
+// websocket port 8081, sends message.
 const wsServer = new websocket.Server({port: 8081}).on('connection', function(socket) {
     //save socket as connected
     sockets.push(socket);
@@ -117,7 +141,7 @@ const wsServer = new websocket.Server({port: 8081}).on('connection', function(so
     });
   });
 
-
+// http API server, port 8082
 const hServer = new http.createServer((req, res) => {
     if(req.method == "POST"){
         // split and remove endpoint
@@ -152,17 +176,21 @@ const hServer = new http.createServer((req, res) => {
         res.end("OK");
 
     }else{
-        res.send(JSON.stringify(player));
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader("Content-Type", "application/json");
+        res.write(JSON.stringify(player));
         res.statusCode = 200;
         res.end();
     }
 
 }).listen(8082);
 
-var fileServer = new static.Server('./static');
+var fileServer = new static.Server('/home/pi/Librespot-node-server/static')
 
+// http static server port 8082, forwarded from :80. 
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         fileServer.serve(request, response);
+        console.log("Static connection")
     }).resume();
 }).listen(8083);

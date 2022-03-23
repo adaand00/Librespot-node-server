@@ -1,9 +1,41 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>CASE Audio</title>
+
+    <link rel="stylesheet" type="text/css" href="./style.css">
+
+    <script src="https://kit.fontawesome.com/04fe04acab.js" crossorigin="anonymous"></script>
+
+    <script src="./Slider.js"></script>
+    <script src="./librespot.js"></script>
+    <script src="./snapcast.js"></script>
+    <script src="./script.js"></script>
 </head>
 <body>
-    CASE Audio 2
+    <div id="spotTitle">
+        <div id="spotify">
+            <img id="paused" src="./img/paused.png">
+        </div>
+        <div id="infoBox">
+            <h3 id="title">CASE AUDIO</h3>
+            <p id="subtitle">Connect to spotify</p>
+        </div>
+
+    </div>
+
+    <div id="devicelist">
+
+    </div>
+
+    <template>
+        <div class="device">
+            <input type="range" orient="vertical" class="slider">
+            <button><i class="fas fa-volume-up"></i></button>
+            <p>Device name</p>
+        </div>
+    </template>
+    
 </body>
 </html>
