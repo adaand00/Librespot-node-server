@@ -72,7 +72,7 @@ async function handleNewParams(paramMap){
 
     if(paramMap.has("vol")){
         // update volume
-        player.volume = paramMap.get("vol")*100 / 65536
+        player.volume = Math.round(paramMap.get("vol")*100 / 65536);
     }
 
     if(paramMap.has("status")){
@@ -91,7 +91,7 @@ async function handleNewParams(paramMap){
 
     // Wait for all APIs to return, then notify all subscribers. 
     Promise.all(promises).then(() => {
-        console.log(player);
+        //console.log(player);
 
         sockets.forEach((socket) => {
             socket.send(JSON.stringify(player));
@@ -104,7 +104,7 @@ var sockets = [];
 const wsServer = new websocket.Server({port: 8081}).on('connection', function(socket) {
     //save socket as connected
     sockets.push(socket);
-    console.log(sockets);
+    //console.log(sockets);
   
     // on message recieved, send back the status
     socket.on('message', function(msg) {
@@ -144,7 +144,7 @@ const hServer = new http.createServer((req, res) => {
             paramMap.set(kvPair[0], kvPair[1])
         });
 
-        console.log(paramMap);
+        //console.log(paramMap);
 
         handleNewParams(paramMap);
 
