@@ -2,9 +2,10 @@
 
 const http = require('http');
 const websocket = require('ws');
-const keys = require('./API-keys');
 const axios = require('axios');
 const static = require('node-static')
+
+const keys = require('./API-keys');
 
 const noPlayer = JSON.stringify({
     status: "stopped",
