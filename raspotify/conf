@@ -70,7 +70,7 @@ LIBRESPOT_DEVICE_TYPE="speaker"
 #LIBRESPOT_CACHE_SIZE_LIMIT=""
 
 # Audio backend to use, alsa or pipe. Defaults to alsa.
-#LIBRESPOT_BACKEND="alsa"
+LIBRESPOT_BACKEND="pipe"
 
 # Username used to sign in with.
 # Credentials are not required if LIBRESPOT_DISABLE_DISCOVERY is not set.
@@ -81,7 +81,7 @@ LIBRESPOT_DEVICE_TYPE="speaker"
 
 # Audio device to use, use `librespot --device ?` to list options.
 # Defaults to the system's default.
-#LIBRESPOT_DEVICE="default"
+LIBRESPOT_DEVICE="/run/snapfifo"
 
 # Initial volume in % from 0 - 100.
 # Defaults to 50 For the alsa mixer: the current volume.
