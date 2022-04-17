@@ -13,10 +13,14 @@ body{
     flex-wrap: wrap;
 }
 
+.mini{
+    background-color: black;
+}
+
 #spotify{
     margin-top: 20px;
-    height: 80vh;
-    width: 80vh;
+    height: 75vh;
+    width: 75vh;
     background-image: url("./img/defaultCover.png");
     background-size: cover;
 
@@ -24,13 +28,25 @@ body{
     justify-content: center;
     align-items: center;
 
-    box-shadow: black 2px 0px 10px ;
+    border-radius: 10px;
+
+    box-shadow: black 2px 3px 50px ;
+}
+
+#spotify .mini{
+    height: 40vh;
+    width: 40vh;
 }
 
 @media (max-aspect-ratio: 1/1 ) {
     #spotify {
-        height: 80vw;
-        width: 80vw;
+        height: 75vw;
+        width: 75vw;
+    }
+
+    #spotify .mini{
+        height: 40vw;
+        width: 40vw;
     }
 }
 
