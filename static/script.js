@@ -14,7 +14,7 @@ var lastData
 var connectedClients = new Map();
 
 // Create websocket
-const snapsock = new WebSocket("ws://case-audio.com:1780/jsonrpc");
+const snapsock = new WebSocket("ws://"+ location.host + ":1780/jsonrpc");
 // Handle responses
 snapsock.addEventListener("message", (message) => {
     handleMessage(JSON.parse(message.data));
