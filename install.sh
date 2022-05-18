@@ -30,7 +30,7 @@ sudo iptables-save
 
 # install drivers 
 wget https://github.com/CASE-Association/case-AudioSystem/raw/master/adau1701-i2s.dtbo
-sudo cp ADAU1701-I2S-Audio-Driver-for-Raspberry-Pi/adau1701-i2s.dtbo /boot/overlays
+sudo cp adau1701-i2s.dtbo /boot/overlays/
 
 # Install snapcast
 sudo apt install snapserver snapclient
