@@ -1,3 +1,5 @@
+#!/usr/bin/sh
+
 sudo service raspotify stop
 sudo service librespot-node-api stop
 sudo service snapserver stop
