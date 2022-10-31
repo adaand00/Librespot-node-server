@@ -1,6 +1,5 @@
 body{
     box-sizing: border-box;
-    background-color: #333333;
     color: white;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     display: flex;
@@ -11,21 +10,22 @@ body{
     height: 99vh;
     margin: 0px;
     flex-wrap: wrap;
-}
-
-#spotTitle{
-    max-width: 75vh;
-}
-
-.mini{
     background-color: black;
     cursor: none; 
 }
 
+#spotTitle{
+    max-width: 70vh;
+}
+
+h2{
+    margin: 10px 0px;
+}
+
 #spotify{
     margin-top: 20px;
-    height: 75vh;
-    width: 75vh;
+    height: 70vh;
+    width: 70vh;
     background-image: url("./img/defaultCover.png");
     background-size: cover;
 
@@ -36,27 +36,6 @@ body{
     border-radius: 10px;
 
     box-shadow: black 2px 3px 50px ;
-}
-
-#spotify.mini{
-    height: 30vh;
-    width: 30vh;
-}
-
-@media (max-aspect-ratio: 1/1 ) {
-    #spotTitle {
-        width: 75vw;
-    }
-
-    #spotify {
-        height: 75vw;
-        width: 75vw;
-    }
-
-    #spotify .mini{
-        height: 40vw;
-        width: 40vw;
-    }
 }
 
 #paused{
@@ -102,10 +81,6 @@ button {
     cursor: pointer;
 }
 
-.device .mini {
-    cursor: none;
-}
-
 #volumeBox .slider{
     width: 65%;
     height: 8px;
@@ -143,9 +118,10 @@ button {
 .device{
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 100px;
     align-items: center;
     margin-top: 30px;
+    cursor:none
 }
 
 .device p{
@@ -156,7 +132,7 @@ button {
     -webkit-appearance: slider-vertical;
     writing-mode: bt-lr;
     width: 8px;
-    height: 40vh;
+    height: 30vh;
 }
 
 .rotate{
