@@ -40,7 +40,7 @@ sudo iptables-save
 echo "----------- Install ADAU1701 drivers -----------"
 wget https://github.com/CASE-Association/case-AudioSystem/raw/master/adau1701-i2s.dtbo
 sudo cp adau1701-i2s.dtbo /boot/overlays/
-echo "dtoverlay=adau1701-i2s"
+echo "dtoverlay=adau1701-i2s" >> /boot/config.txt
 
 # Install snapcast
 echo "----------- Install snapserver and snapclient ------------"
