@@ -25,6 +25,13 @@ class librespot {
     handleMessage(mess){
         console.log("New message from spotify: " + JSON.stringify(mess))
         this.player = mess;
+        if (this.player.status == "stopped"){
+            // Set volume of snapcast clients to 3:
+            connectedClients.forEach((client) => { 
+                client.sendVolume(3);
+                client.updateDisplay();})
+
+        }
         this.updateDisplay();
     }
 
