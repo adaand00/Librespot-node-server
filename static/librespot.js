@@ -30,7 +30,6 @@ class librespot {
             connectedClients.forEach((client) => { 
                 client.sendVolume(3);
                 client.updateDisplay();})
-
         }
         this.updateDisplay();
     }

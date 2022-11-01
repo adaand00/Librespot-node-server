@@ -23,6 +23,18 @@ snapsock.addEventListener("message", (message) => {
 // Send "Server.GetStatus" request when socket is opened
 snapsock.addEventListener('open', () => snapsock.send(JSON.stringify(++lastRequest.id && lastRequest)));
 
+function courseTime() {
+    // if time is between 7 and 17 on weekdays, set max volume to 10
+    var d = new Date();
+    if (d.getHours() >= 7 && d.getHours() < 17 && d.getDay() >= 1 && d.getDay() <= 5){
+        connectedClients.forEach((client) => {client.setMaxVolume(10);})
+        
+    } else {
+        connectedClients.forEach((client) => {client.setMaxVolume(50);})
+    }
+}
+setInterval(courseTime, 60000);
+
 // spotify state handler
 spot = new librespot(addr)
 
@@ -53,5 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add all connected clients
     connectedClients.forEach((client) => { client.addDiv()})
+    setTimeout(courseTime, 1000);
 })
 

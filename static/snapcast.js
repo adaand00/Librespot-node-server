@@ -128,6 +128,15 @@ class Client {
         document.getElementById("devicelist").appendChild(this.div)
     }
 
+    setMaxVolume(vol){
+        console.log("Set max volume to " + vol);
+        this.slider.element.setAttribute("max", vol);
+        if(this.volume > vol){
+            this.sendVolume(vol);
+            this.updateDisplay();
+        }
+    }
+
     sendCommand(method, params){
         lastRequest = {
             'id': ++lastRequest.id,
