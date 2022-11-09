@@ -53,7 +53,7 @@ function getPlayerInfo(trackID){
         let track = response.data;
         
         player.track.title = track.name;
-        player.track.artUrl = track.album.images[2].url;
+        player.track.artUrl = track.album.images[0].url;
         console.log(track.album.images)
         player.track.album = track.album.name;
         
